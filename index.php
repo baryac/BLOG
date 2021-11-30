@@ -6,13 +6,15 @@ $results = getArticles();?>
 
 
 
-<p>fdfdfd</p>
+
+
+    <p class="namesite">MON BLOG</p>
 
 
 
     <div class="container">
         <div class="row text-white fs-1 fw-bold text-center mb-2">
-            <span  class="text-center" >Mon encyclopédie Star Wars</span> 
+            <span  class="text-center" >blog foot</span> 
         </div>
         <div class="row" id="=cardindex">
             <?php foreach($results as $result){ ?>
