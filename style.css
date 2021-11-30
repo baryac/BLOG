@@ -1,0 +1,10 @@
+#bg-project{
+    background-image:url('img/footWP.jpg');
+    background-size:cover;
+    background-position: center;
+}
+
+
+#bandeauhaut {
+    background-color:rgba(30, 182, 93, 0.5);
+}

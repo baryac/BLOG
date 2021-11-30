@@ -1,5 +1,3 @@
-connexion.php
-connection.php
-footer.php
-header.php
+model/connection.php
+/partials
 /img
