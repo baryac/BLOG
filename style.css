@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 html,body {
     margin: 0;
     padding: 0;
@@ -14,4 +15,15 @@ html,body {
     color: #fff;
     position: relative;
     font-family: fantasy;
+=======
+#bg-project{
+    background-image:url('img/footWP.jpg');
+    background-size:cover;
+    background-position: center;
+}
+
+
+#bandeauhaut {
+    background-color:rgba(30, 182, 93, 0.5);
+>>>>>>> b14d66b7564a3ae5ef4015dd6d2efca5e9c9bf0e
 }
