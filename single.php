@@ -24,7 +24,7 @@ $articlecategories = getArticlesCategoriesarticlesById3($id);
                         <span class="fs-5"> Titre:</span> <?php echo $articletitle['title'];?>
                     </p>
                     <p> 
-                        <span class="fs-5">Date de publication:</span>  <?php echo $articledate['date de publication'];?>
+                        <span class="fs-5">Date de publication:</span>  <?php echo $articledate['date_de_publication'];?>
                     </p>
                     <p> 
                     <span class="fs-5"> Article: </span><?php foreach($articlecategories as $article0){echo $article0['nom_category'];} ?>

@@ -2,6 +2,13 @@
 
 require 'connection.php';
 
+function getpseudoauteur() {
+    $db = dbconnect();
+    $contacts = $db->query('SELECT * FROM `auteurs`');
+    $results = $contacts->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
 function getArticles() {
     $db = dbconnect();
     $contacts = $db->query('SELECT * FROM articles');
@@ -25,7 +32,7 @@ function getArticlesTitleById7($id){
 
 function getArticlesDateById4($id){
     $db = dbconnect();
-    $article = $db->query('SELECT `date de publication` FROM `articles` WHERE articles.id='.$id);
+    $article = $db->query('SELECT `date_de_publication` FROM `articles` WHERE articles.id='.$id);
     $results = $article->fetch(PDO::FETCH_ASSOC);
     return $results;
 }
@@ -51,9 +58,23 @@ function getArticlesCategoriesarticlesById3($id){
     return $results;
 }
 
-function addArticle($name, $birthdate, $origine, $background, $img, $force_id){
+function addArticle($image, $title, $content, $date_de_publication, $auteur_id, $video){
     $db = dbconnect();
-    $newContact = $db->query("INSERT INTO member() VALUES (null, '$name', '$birthdate', '$origine', '$background', '$img', '$force_id')");
+    $newContact = $db->query("INSERT INTO `articles`(`id`, `image`, `title`, `content`, `date_de_publication`, `auteur_id`, `video`) VALUES (null, '$image', '$title', '$content', '$date_de_publication', '$auteur_id', '$video')");
+    $last = $db->lastInsertId();
+    return $last;
+}
+
+function getcategories(){
+    $db = dbconnect();
+    $categorie = $db->query('SELECT * FROM categories');
+    $results = $categorie->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
+function addarticlecategorie($categorie, $last){
+    $db = dbconnect(); 
+    $newarticlecatrgorie = $db->query("INSERT INTO categories_articles (`id`, `id_article`, `id_categorie`) VALUES (NULL, '$last', '$categorie')");
 }
 
 ?>
