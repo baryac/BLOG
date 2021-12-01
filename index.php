@@ -3,14 +3,27 @@ require 'partials/header.php';
 require 'model/functions.php';
 
 $results = getArticles();
+$pseudos = getpseudoauteur();
 ?>
 
+<div class="row bg-primary mb-2 text-white fs-1 fw-bold ">
+      <p class="text-center">Mon blog de foot</p>  
+</div>
 
+        <!-- 
+        <div class="col-6 text-white">
+                   <div> 
+                        <?php foreach($pseudos as $pseudo){ ?>
+                            <div class="">
+                                auteur : <?php echo $pseudo['pseudo']?>
+                            </div>
+                        <?php } ?>
+                    </div>
+        </div>
+        -->
 
 <div class="container">
-    <div class="row text-white fs-1 fw-bold text-center mb-2">
-        <span  class="text-center" >Mon blog de foot</span> 
-    </div>
+
     <div class="row" id="=cardindex">
         <?php foreach($results as $result){ ?>
             <div class="col-3 mt-2">
@@ -25,10 +38,11 @@ $results = getArticles();
             </div>
         <?php } ?>
     </div>
-    
-    <div class="form-group my-4">
-        <button type="submit"  id="submit" class="btn btn-dark col-12"> <a href="newarticles.php" class="text-decoration-none"> <span class="text-white">Nouvel article</span></a></button>
-    </div>
+        <div class="form-group my-4">
+            <button type="submit"  id="submit" class="btn btn-dark col-12"> <a href="newarticles.php" class="text-decoration-none"> <span class="text-white">Nouvel article</span></a></button>
+        </div>
+    </div>    
+
 </div>    
  
 

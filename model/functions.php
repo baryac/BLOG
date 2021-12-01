@@ -2,6 +2,13 @@
 
 require 'connection.php';
 
+function getpseudoauteur() {
+    $db = dbconnect();
+    $contacts = $db->query('SELECT * FROM `auteurs`');
+    $results = $contacts->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
 function getArticles() {
     $db = dbconnect();
     $contacts = $db->query('SELECT * FROM articles');
@@ -57,10 +64,23 @@ function getArticlesById($id){
     $article = $resultat->fetch(PDO::FETCH_ASSOC);
     return $article;
 }
-
-function addArticle($title, $content, $img, $auteur_id, $video){
+function addArticle($image, $title, $content, $date_de_publication, $auteur_id, $video){
     $db = dbconnect();
-    $newArticle = $db->query("INSERT INTO articles() VALUES (null, '$title', '$content', '$img', '$auteur_id', '$video')");
+    $newContact = $db->query("INSERT INTO `articles`(`id`, `image`, `title`, `content`, `date_de_publication`, `auteur_id`, `video`) VALUES (null, '$image', '$title', '$content', '$date_de_publication', '$auteur_id', '$video')");
+    $last = $db->lastInsertId();
+    return $last;
+}
+
+function getcategories(){
+    $db = dbconnect();
+    $categorie = $db->query('SELECT * FROM categories');
+    $results = $categorie->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
+function addarticlecategorie($categorie, $last){
+    $db = dbconnect(); 
+    $newarticlecatrgorie = $db->query("INSERT INTO categories_articles (`id`, `id_article`, `id_categorie`) VALUES (NULL, '$last', '$categorie')");
 }
 
 function afficherCommentaires($article_id){
@@ -69,6 +89,5 @@ function afficherCommentaires($article_id){
     $results = $commentaire->fetchAll(PDO::FETCH_ASSOC);
     return $results;
 }
-
 
 ?>
