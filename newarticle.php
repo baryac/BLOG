@@ -7,7 +7,7 @@ if(isset($_POST)){
     $img = $_POST['image'];
     $title = $_POST['title'];
     $content = $_POST['content'];
-    $date = $_POST['date de publication'];
+    $date = $_POST['date_de_publication'];
     $auteur_id = $_POST['numero'];
     $video = $_POST['video'];
     addArticle($title, $content, $img, $auteur_id, $video);

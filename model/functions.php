@@ -25,7 +25,7 @@ function getArticlesTitleById7($id){
 
 function getArticlesDateById4($id){
     $db = dbconnect();
-    $article = $db->query('SELECT `date de publication` FROM `articles` WHERE articles.id='.$id);
+    $article = $db->query('SELECT `date_de_publication` FROM `articles` WHERE articles.id='.$id);
     $results = $article->fetch(PDO::FETCH_ASSOC);
     return $results;
 }
@@ -62,5 +62,13 @@ function addArticle($title, $content, $img, $auteur_id, $video){
     $db = dbconnect();
     $newArticle = $db->query("INSERT INTO articles() VALUES (null, '$title', '$content', '$img', '$auteur_id', '$video')");
 }
+
+function afficherCommentaires($article_id){
+    $db=dbconnect();
+    $commentaire = $db->query("SELECT * FROM `commentaires`WHERE article_id = '$article_id'");
+    $results = $commentaire->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
 
 ?>

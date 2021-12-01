@@ -1,39 +1,3 @@
-<<<<<<< HEAD
-<?php require_once('model/functions.php'); 
-$id = $_GET['id'];
-$article = getArticlesById($id);
-//var_dump($article);
-?>
-
-<div class="card mb-3" style="max-width: 540px;">
-    <div class="row g-0">
-        <div class="col-md-4 ratio ratio-16x9">
-            <video src="<?php echo $article['video']; ?>" type="video/mp4" style="--bs-aspect-ratio: 50%;"></video>
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title"><?php echo $article['title'] . " " . $joueur['date de publication'] ?></h5>
-                <p class="card-text"><?php echo $article['content'] ?></p>
-                <p class="card-text"><small class="text-muted">Yacin.b</small></p>
-            </div>
-        </div>
-    </div>
-</div>
-<form action="" method="post">
-    <div class="input-group">
-    <span class="input-group-text">Pseudo</span>
-    <input type="text" aria-label="First name" class="form-control">
-    </div>
-    <div class="form-floating">
-    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-    <label for="floatingTextarea">Comments</label>
-    </div>
-    <div>
-        <label for="date">date de commentaire</label>
-        <input type="date" name="date" id="date" class="form-control">
-    </div>
-</form>
-=======
 <?php 
 
 $id = $_GET['id'];
@@ -47,8 +11,39 @@ $articledate = getArticlesDateById4($id);
 $articlecontent = getArticlestContentById($id);
 $articleauteurs = getArticlesAuteursById2($id);
 $articlecategories = getArticlesCategoriesarticlesById3($id);
+$commentaires = afficherCommentaires($id);
+//var_dump($commentaires);
 
-?>  
+
+/*while($c = $commentaires->fetch()){
+ $c=['pseudo'] ; $c=['contenu'];
+}*/
+
+if(isset($_POST['submit_contenu'])){
+    if(isset($_POST['pseudo'],$_POST['contenu']) AND !empty($_POST['pseudo']) AND !empty($_POST['contenu'])){
+        $pseudo = htmlspecialchars($_POST['pseudo']);
+        $contenu = htmlspecialchars($_POST['contenu']);
+        if(strlen($pseudo)<15){
+            $db = dbconnect();
+            $ins = $db->prepare("INSERT INTO commentaires(pseudo,contenu,article_id) VALUES(?, ?, ?)");
+            $ins->execute(array("$pseudo","$contenu","$id"));
+            $c_msg= "<span style='colore:green'>votre commentaire a bien été envoyer</span>";
+            header("location:single.php?id=$id");
+        }elseif(strlen($pseudo > 15)){
+            $c_msg = "erreur: pseudo doit pas depasser 15 caracteres";
+        }else{
+            $c_msg = "erreur: tous les champs doit etre completes";
+        }
+    }
+}   
+
+if(isset($c_msg)){
+    echo $c_msg;
+}
+?> 
+
+
+
 
 <div class="container bg-light">
     <div class="row p-2">
@@ -56,16 +51,15 @@ $articlecategories = getArticlesCategoriesarticlesById3($id);
                 <img src="<?php echo $articleimage['image'];?>">
         </div>
         <div class="col-4">
-                    <p>
-                        <span class="fs-5"> Titre:</span> <?php echo $articletitle['title'];?>
-                    </p>
-                    <p> 
-                        <span class="fs-5">Date de publication:</span>  <?php echo $articledate['date de publication'];?>
-                    </p>
-                    <p> 
-                    <span class="fs-5"> Article: </span><?php foreach($articlecategories as $article0){echo $article0['nom_category'];} ?>
-                    </p>
-        </p>
+            <p>
+                <span class="fs-5"> Titre:</span> <?php echo $articletitle['title'];?>
+            </p>
+            <p> 
+                <span class="fs-5">Date de publication:</span>  <?php echo $articledate['date_de_publication'];?>
+            </p>
+            <p> 
+                <span class="fs-5"> Article: </span><?php foreach($articlecategories as $article0){echo $article0['nom_category'];} ?>
+            </p>
         </div>
     </div>
     <div class="row m-2 p-2">
@@ -75,6 +69,24 @@ $articlecategories = getArticlesCategoriesarticlesById3($id);
         <p> 
             <span class="fs-5"> Auteur: </span> <?php echo $articleauteurs['pseudo'];?>
         </p>
+    </div>
+    <div>
+    <?php foreach($commentaires as $ligne){ ?>
+        <div>
+            <p class="badge bg-primary text-wrap fw-bold fs-4" style="width: 6rem;"><?php echo $ligne['pseudo']?></p>
+            <p><?php echo $ligne['date_comment']?></p>
+            <p class="text-break fst-italic"><?php echo $ligne['contenu']?></p> 
+        </div>
+        
+    <?php } ?>
+</div> 
+    <div>
+        <form id="fromz" method="post" action="">
+            <label for="pseudo">Pseudo : </label><input type="text" name="pseudo" id="pseudo" placeholder="Entrez votre pseudo..." maclength="20" /><br />
+            <!-- <label for="titre">Date : </label><input type="date" name="date_comment" id="date_comment" placeholder="..." maxlength="50" /><br />-->
+            <label for="contenu">Commentaire : </label><br /><textarea name="contenu" id="contenu" placeholder="laissez vos commentaires ici..."></textarea><br />
+            <input type="submit" class="btn btn-primary" value="Envoyer" name="submit_contenu" />
+        </form>
     </div>
 </div>
 
@@ -103,4 +115,3 @@ $articlecategories = getArticlesCategoriesarticlesById3($id);
 require 'partials/footer.php';
 ?>
 
->>>>>>> b14d66b7564a3ae5ef4015dd6d2efca5e9c9bf0e
