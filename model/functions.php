@@ -80,6 +80,12 @@ function getArticlesCategoriesarticlesById3($id){
     return $results;
 }
 
+function getArticlesById($id){
+    $db = dbconnect();
+    $resultat = $db->query("SELECT * FROM articles WHERE articles.id ='$id'");
+    $article = $resultat->fetch(PDO::FETCH_ASSOC);
+    return $article;
+}
 function addArticle($image, $title, $content, $date_de_publication, $auteur_id, $video){
     $db = dbconnect();
     $newContact = $db->query("INSERT INTO `articles`(`id`, `image`, `title`, `content`, `date_de_publication`, `auteur_id`, `video`) VALUES (null, '$image', '$title', '$content', '$date_de_publication', '$auteur_id', '$video')");
