@@ -11,8 +11,34 @@ $articledate = getArticlesDateById4($id);
 $articlecontent = getArticlestContentById($id);
 $articleauteurs = getArticlesAuteursById2($id);
 $articlecategories = getArticlesCategoriesarticlesById3($id);
+$commentaires = afficherCommentaires($id);
 
-?>  
+
+
+if(isset($_POST['submit_contenu'])){
+    if(isset($_POST['pseudo'],$_POST['contenu']) AND !empty($_POST['pseudo']) AND !empty($_POST['contenu'])){
+        $pseudo = htmlspecialchars($_POST['pseudo']);
+        $contenu = htmlspecialchars($_POST['contenu']);
+        if(strlen($pseudo)<15){
+            $db = dbconnect();
+            $ins = $db->prepare("INSERT INTO commentaires(pseudo,contenu,article_id) VALUES(?, ?, ?)");
+            $ins->execute(array("$pseudo","$contenu","$id"));
+            $c_msg= "<span style='colore:green'>votre commentaire a bien été envoyer</span>";
+            header("location:single.php?id=$id");
+        }elseif(strlen($pseudo > 15)){
+            $c_msg = "erreur: pseudo doit pas depasser 15 caracteres";
+        }else{
+            $c_msg = "erreur: tous les champs doit etre completes";
+        }
+    }
+}   
+
+if(isset($c_msg)){
+    echo $c_msg;
+}
+?>
+
+
 
 <div class="container bg-light">
     <div class="row p-2">
@@ -40,7 +66,28 @@ $articlecategories = getArticlesCategoriesarticlesById3($id);
             <span class="fs-5"> Auteur: </span> <?php echo $articleauteurs['pseudo'];?>
         </p>
     </div>
-</div>
+
+    <div>
+        <?php foreach($commentaires as $ligne){ ?>
+            <div>
+                <p class="badge bg-primary text-wrap fw-bold fs-4" style="width: 6rem;"><?php echo $ligne['pseudo']?></p>
+                <p><?php echo $ligne['date_comment']?></p>
+                <p class="text-break fst-italic"><?php echo $ligne['contenu']?></p> 
+            </div>
+            
+        <?php } ?>
+    </div> 
+        <div>
+            <form id="fromz" method="post" action="">
+                <label for="pseudo">Pseudo : </label><input type="text" name="pseudo" id="pseudo" placeholder="Entrez votre pseudo..." maclength="20" /><br />
+                <!-- <label for="titre">Date : </label><input type="date" name="date_comment" id="date_comment" placeholder="..." maxlength="50" /><br />-->
+                <label for="contenu">Commentaire : </label><br /><textarea name="contenu" id="contenu" placeholder="laissez vos commentaires ici..."></textarea><br />
+                <input type="submit" class="btn btn-primary" value="Envoyer" name="submit_contenu" />
+            </form>
+        </div>
+    </div>
+    </div>
+
 
 <div class="container">
     <div class="row">
@@ -60,7 +107,6 @@ $articlecategories = getArticlesCategoriesarticlesById3($id);
             </div>
         </div>
     </div>
-
 </div>
 
 <?php

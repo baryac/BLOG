@@ -9,10 +9,32 @@ function getpseudoauteur() {
     return $results;
 }
 
+function getccategories() {
+    $db = dbconnect();
+    $contacts = $db->query('SELECT * FROM `categories`');
+    $results = $contacts->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
+
 function getArticles() {
     $db = dbconnect();
     $contacts = $db->query('SELECT * FROM articles');
     $results = $contacts->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
+function getAuteurs() {
+    $db = dbconnect();
+    $auteurss = $db->query('SELECT * FROM `auteurs`');
+    $results = $auteurss->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
+function getArticlesAllById($id){
+    $db = dbconnect();
+    $article = $db->query('SELECT * FROM `articles` WHERE auteur_id='.$id);
+    $results = $article->fetchAll(PDO::FETCH_ASSOC);
     return $results;
 }
 
@@ -75,6 +97,33 @@ function getcategories(){
 function addarticlecategorie($categorie, $last){
     $db = dbconnect(); 
     $newarticlecatrgorie = $db->query("INSERT INTO categories_articles (`id`, `id_article`, `id_categorie`) VALUES (NULL, '$last', '$categorie')");
+}
+
+function connectAuteurs($email, $password){
+    $db = dbconnect();
+    $query = $db->query("SELECT * FROM auteurs WHERE auteurs.email='$email' AND auteurs.password='$password'");
+    $user = $query->fetch(PDO::FETCH_ASSOC);
+    //$verifiedPass = password_verify($password, $user['password']);
+    //var_dump($verifiedPass);
+    if($user){
+        return $user;
+    }
+}
+
+function afficherCommentaires($article_id){
+    $db=dbconnect();
+    $commentaire = $db->query("SELECT * FROM `commentaires`WHERE article_id = '$article_id'");
+    $results = $commentaire->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
+
+function addAuteurs($pseudo, $email, $password){
+    $db=dbconnect();
+    $query = $db->prepare("INSERT INTO auteurs (pseudo, email, password) VALUES (:pseudo, :email, :password)");
+    $query->bindParam(':pseudo', $pseudo);
+    $query->bindParam(':email', $email);
+    $query->bindParam(':password', $password);
+    $query->execute();
 }
 
 ?>

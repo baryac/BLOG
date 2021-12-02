@@ -20,12 +20,13 @@ if(isset($_POST)){
     $title = $_POST['title'];
     $date_de_publication = $_POST['date_de_publication'];
     $content = $_POST['content'];
-    $image = $_POST['image'];
+    $image = "$uploaddir/$uniqname"."$ext";
     $auteur_id = $_POST['auteur_id'];
     $video = $_POST['video'];
     $categorie = $_POST['categorie'];
 }
 
+$auteursss = getAuteurs();
 $categories = getcategories();
 $last = addArticle($image, $title, $content, $date_de_publication, $auteur_id, $video);
 
@@ -46,8 +47,14 @@ foreach ($categorie as $element){
                         <input type="file" name="image" id="FILES" class="form-control"> 
                         <label for="name">Content</label>
                         <input type="textarea" name="content" class="form-control" id="content">
-                        <label for="name">Auteur</label>
-                        <input type="text" name="auteur_id" class="form-control" id="auteur_id">
+                        <div class="my-2">
+                            <select name="auteur_id" id="auteur_id" class="form-select mt-">
+                                    <option selected>L'auteur de l'article</option>
+                                    <?php foreach($auteursss as $auteur){ ?>
+                                        <option value="<?php echo $auteur['id']; ?>"><?php echo $auteur['pseudo']?></option>
+                                    <?php } ?>
+                            </select>  
+                        </div>
                         <label for="name">Video</label>
                         <input type="text" name="video" class="form-control" id="video">
                         <div>
